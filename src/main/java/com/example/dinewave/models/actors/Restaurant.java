@@ -1,19 +1,28 @@
 package com.example.dinewave.models.actors;
 
 import com.example.dinewave.models.system.Item;
+import com.example.dinewave.models.system.Location;
 
 import java.util.List;
 
-class Restaurant
+public class Restaurant
 {
-    final long restaurantId;
-    final String location;
     String name,description;
     List<Item> items;
+    Location location;
 
-  public Restaurant(long restaurantId, String name, String description, String location)
+
+  public Location getLocation()
   {
-    this.restaurantId = restaurantId;
+    return location;
+  }
+
+  public void setLocation(Location location) {
+    this.location = location;
+  }
+
+  public Restaurant(String name, String description,Location location)
+  {
     this.name = name;
     this.description = description;
     this.location = location;
@@ -34,11 +43,6 @@ class Restaurant
 
   }
 
-  public long getRestaurantId()
-  {
-    return restaurantId;
-  }
-
 
   public String getName()
   {
@@ -47,10 +51,6 @@ class Restaurant
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public String getLocation() {
-    return location;
   }
 
   public String getDescription()

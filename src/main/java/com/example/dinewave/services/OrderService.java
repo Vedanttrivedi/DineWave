@@ -2,8 +2,10 @@ package com.example.dinewave.services;
 
 import com.example.dinewave.dao.OrderDAO;
 import com.example.dinewave.models.system.Order;
+import com.example.dinewave.utils.Address;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 
 public class OrderService extends AbstractVerticle
@@ -21,12 +23,14 @@ public class OrderService extends AbstractVerticle
     //listen for incoming orders
     var eventBus = vertx.eventBus();
 
-    eventBus.<JsonObject>localConsumer("com.example.dinewave.order",handler->{
+
+
+    eventBus.<JsonObject>localConsumer(Address.orderAddress, handler->{
 
       System.out.println("I recieved Order From "+handler.address());
       System.out.println("Order Details "+handler.body());
 
-      JsonObject order = handler.body();
+      var order = handler.body();
       System.out.println("Received in order service "+order);
       //First Make the payment
 

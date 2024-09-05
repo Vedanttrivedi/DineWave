@@ -1,16 +1,11 @@
 package com.example.dinewave.models.actors;
 
-abstract class User
+abstract public class User
 {
     String username,email;
     transient String password;
-    long userId;
     String location;
 
-  public User()
-  {
-
-  }
 
     public User(String username,String password,String email,String location)
     {
@@ -45,14 +40,6 @@ abstract class User
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public long getUserId() {
-    return userId;
-  }
-
-  public void setUserId(long userId) {
-    this.userId = userId;
   }
 
   public String getLocation() {

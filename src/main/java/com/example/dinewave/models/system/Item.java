@@ -1,13 +1,22 @@
 package com.example.dinewave.models.system;
 
-import io.vertx.core.json.JsonObject;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-final public class Item
+import java.io.Serializable;
+
+public class Item implements Serializable
 {
+    @JsonProperty
   private String name;
+    @JsonProperty
   private String description;
-  private long price;
+  @JsonProperty
+    private long price;
 
+  public Item()
+  {
+
+  }
   public Item(String name, String description, long price)
 
   {
@@ -15,6 +24,8 @@ final public class Item
     this.description = description;
     this.price = price;
   }
+
+
 
 
   public String getName() {
