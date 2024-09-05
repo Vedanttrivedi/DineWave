@@ -2,7 +2,8 @@ package com.example.dinewave.models.actors;
 
 abstract class User
 {
-    String username,email,password;
+    String username,email;
+    transient String password;
     long userId;
     String location;
 
