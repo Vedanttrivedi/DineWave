@@ -5,6 +5,7 @@ import com.example.dinewave.models.actors.Restaurant;
 import com.example.dinewave.models.actors.User;
 import com.example.dinewave.models.system.Item;
 import com.example.dinewave.models.system.Location;
+import com.example.dinewave.models.system.Order;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,6 +15,7 @@ public class Database
 
     private static final ConcurrentHashMap<Long, User> users = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Long, Restaurant> restaurants = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Long, Order> orders = new ConcurrentHashMap<>();
 
     static {
         // Preload random users
@@ -66,6 +68,10 @@ public class Database
     public static ConcurrentHashMap<Long, Restaurant> getRestaurants() {
         return restaurants;
     }
+    public static ConcurrentHashMap<Long, Order> getOrders() {
+        return orders;
+    }
+
 }
 
 

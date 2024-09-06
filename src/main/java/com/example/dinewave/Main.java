@@ -1,6 +1,6 @@
 package com.example.dinewave;
 
-import com.example.dinewave.connectors.Client;
+import com.example.dinewave.connectors.ClientService;
 import com.example.dinewave.dao.Database;
 import com.example.dinewave.services.DeliveryService;
 import com.example.dinewave.services.OrderService;
@@ -16,7 +16,10 @@ public class Main
   public static void main(String[] args)
   {
       var users = Database.getUsers();
+
       var restaurants = Database.getRestaurants();
+
+      var orders = Database.getOrders();
 
       var vertx = Vertx.vertx();
 
@@ -29,7 +32,7 @@ public class Main
 
       vertx.deployVerticle(new DeliveryService(restaurants));
 
-      vertx.deployVerticle(new Client(users,restaurants));
+      vertx.deployVerticle(new ClientService(users,restaurants));
 
   }
 

@@ -1,10 +1,8 @@
 package com.example.dinewave.connectors;
 
-import com.example.dinewave.dao.Database; // Import the database class
 import com.example.dinewave.models.actors.User;
 import com.example.dinewave.models.actors.Restaurant;
 import com.example.dinewave.models.system.Item;
-import com.example.dinewave.models.system.Location;
 import com.example.dinewave.models.system.Order;
 import com.example.dinewave.utils.Address;
 import io.vertx.core.AbstractVerticle;
@@ -15,15 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
-public class Client extends AbstractVerticle
+public class ClientService extends AbstractVerticle
 {
     ConcurrentHashMap<Long,Restaurant> restaurants;
     ConcurrentHashMap<Long,User> users;
 
 
-    public Client(ConcurrentHashMap<Long,User> users,ConcurrentHashMap<Long,Restaurant> restaurants)
+    public ClientService(ConcurrentHashMap<Long,User> users, ConcurrentHashMap<Long,Restaurant> restaurants)
     {
         this.users = users;
         this.restaurants =restaurants;

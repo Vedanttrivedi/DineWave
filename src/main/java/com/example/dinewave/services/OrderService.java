@@ -1,7 +1,4 @@
 package com.example.dinewave.services;
-
-import com.example.dinewave.dao.OrderDAO;
-import com.example.dinewave.models.system.Order;
 import com.example.dinewave.utils.Address;
 import com.example.dinewave.utils.OrderStatus;
 import io.vertx.core.AbstractVerticle;
@@ -11,8 +8,6 @@ import io.vertx.core.json.JsonObject;
 
 public class OrderService extends AbstractVerticle
 {
-  //Order Service call Restaurant Service to prepare order
-  //Order Service call Delivery service to pass information about delivery
 
   @Override
   public void start(Promise<Void> startPromise) throws Exception
@@ -29,6 +24,7 @@ public class OrderService extends AbstractVerticle
 
       var order = handler.body();
       //First Make the payment
+
       eventBus.request(Address.paymentAddress,order,reply->{
 
       if(reply.succeeded())

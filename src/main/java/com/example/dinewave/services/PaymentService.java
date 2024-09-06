@@ -58,14 +58,15 @@ public class PaymentService extends AbstractVerticle
                 .mapToLong(item-> ((JsonObject) item).getLong("price")).sum();
 
             System.out.println("Bill is "+bill);
+
             System.out.println("User information "+user);
+
             if (user.getBalance() >= bill)
             {
                 user.setBalance(user.getBalance() - bill);
 
                 System.out.println("Payment initiated at " + LocalDateTime.now());
 
-                // Simulate payment processing delay
                 try
                 {
                     Thread.sleep(4000);
