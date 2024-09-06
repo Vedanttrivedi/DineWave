@@ -6,13 +6,23 @@ abstract public class User
     transient String password;
     String location;
 
+    public long getBalance() {
+        return balance;
+    }
 
-    public User(String username,String password,String email,String location)
+    public void setBalance(long balance) {
+        this.balance = balance;
+    }
+
+    long balance;
+
+    public User(String username,String password,String email,String location,long balance)
     {
       this.username = username;
       this.password = password;
       this.email = email;
       this.location = location;
+      this.balance=balance;
     }
 
 
@@ -49,4 +59,14 @@ abstract public class User
   public void setLocation(String location) {
     this.location = location;
   }
+
+    @Override
+    public String toString() {
+        return "User{" +
+            "username='" + username + '\'' +
+            ", email='" + email + '\'' +
+            ", location='" + location + '\'' +
+            ", balance=" + balance +
+            '}';
+    }
 }

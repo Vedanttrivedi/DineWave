@@ -13,15 +13,14 @@ public record Order (long userId,long restaurantId,List<Item> items,String time)
   {
     JsonArray itemsArray = new JsonArray();
 
-    items.forEach(item -> itemsArray.add(item));
+    items.forEach(item->itemsArray.add(item.toJson()));
 
-    JsonObject object =  new JsonObject()
-      .put("userid ",userId)
-      .put("restaurantid",restaurantId)
-        .put("items",itemsArray)
+    var object =  new JsonObject()
+      .put("userId",userId)
+      .put("restaurantId",restaurantId)
+       .put("items",itemsArray)
       .put("time",time);
 
-      System.out.println("JsonObject Type "+object.getClass());
       return object;
   }
 }

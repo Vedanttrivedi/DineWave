@@ -1,7 +1,10 @@
 package com.example.dinewave.models.system;
 
 
-public record Location (String street,String city,String state,long magnitude)
+import java.util.concurrent.Callable;
+
+public record Location (String street, String city, String state, long magnitude)
 {
+
 
 }

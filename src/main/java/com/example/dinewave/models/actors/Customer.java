@@ -2,9 +2,9 @@ package com.example.dinewave.models.actors;
 
 public class Customer extends User
 {
-    public Customer(String username,String password,String email,String location)
+    public Customer(String username,String password,String email,String location,long balance)
     {
-      super(username,password,email,location);
+      super(username,password,email,location,balance);
     }
 
   public String getUsername()

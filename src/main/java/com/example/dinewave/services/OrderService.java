@@ -12,9 +12,6 @@ public class OrderService extends AbstractVerticle
 {
   //Order Service call Restaurant Service to prepare order
   //Order Service call Delivery service to pass information about delivery
-  static final String paymentAddress = "com.example.dinewave.payment";
-  static final String deliveryAddress = "com.example.dinewave.delivery";
-  static final String restaurantAddress = "com.example.dinewave.restaurant";
 
   @Override
   public void start(Promise<Void> startPromise) throws Exception
@@ -23,33 +20,40 @@ public class OrderService extends AbstractVerticle
     //listen for incoming orders
     var eventBus = vertx.eventBus();
 
-
-
     eventBus.<JsonObject>localConsumer(Address.orderAddress, handler->{
 
-      System.out.println("I recieved Order From "+handler.address());
+      System.out.println("I recieved Order in "+handler.address());
+
       System.out.println("Order Details "+handler.body());
 
       var order = handler.body();
-      System.out.println("Received in order service "+order);
       //First Make the payment
 
-      eventBus.request(paymentAddress,order,reply->{
-        if(reply.succeeded())
+      eventBus.request(Address.paymentAddress,order,reply->{
+
+      if(reply.succeeded())
         {
-          eventBus.send(restaurantAddress,order);
-          eventBus.send(deliveryAddress,order);
+            var replyInString = reply.result().body();
+
+            System.out.println("Reply in string order "+replyInString);
+
+            if(replyInString.equals("Done"))
+            {
+
+                System.out.println("Sending Order Information to DeliveryAddress and RestaurantAddress");
+
+                eventBus.publish(Address.restaurantAndDeliveryAddress,order);
+            }
+            else
+            {
+                System.out.println("Payment Error.May be insufficient Balance");
+            }
         }
-        else
+      else
         {
-          System.out.println("payment failed!");
+          System.out.println("payment failed! Cannot Proceed Order!");
         }
       });
-
-
-      //notify the deliveryman for order information
-      //eventBus.request()
-
     });
 
   }

@@ -1,63 +1,87 @@
 package com.example.dinewave.connectors;
 
+import com.example.dinewave.dao.Database; // Import the database class
+import com.example.dinewave.models.actors.User;
+import com.example.dinewave.models.actors.Restaurant;
 import com.example.dinewave.models.system.Item;
 import com.example.dinewave.models.system.Order;
 import com.example.dinewave.utils.Address;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
-import java.util.TimeZone;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-
-
-//This Class Will Generate Some Random Orders every 3 seconds
-/*
-Class Should be able to generate order for random user and random items
-from random restaurants.
-
-Once the Order is generated send this to order service.
-
-
- */
 
 public class Client extends AbstractVerticle
 {
+    ConcurrentHashMap<Long,Restaurant> restaurants;
+    ConcurrentHashMap<Long,User> users;
 
-  @Override
-  public void start()
-  {
-    //Send the orders to order service
-    //Sample Stimulation
-    //Allow Only 1 order from 1 place only
 
-    Order order = new Order(
-      1,
-      1,
-      new ArrayList<Item>(
-        Arrays.asList(
-          new Item("Pulav", "Spicy", 200),
-          new Item("Papad", "Regular", 40)
-        )),
-      LocalDateTime.now().toString()
-    );
+    public Client(ConcurrentHashMap<Long,User> users,ConcurrentHashMap<Long,Restaurant> restaurants)
+    {
+        this.users = users;
+        this.restaurants =restaurants;
+    }
 
-    //Pick random user (between userid 0 to n)
-    //Pick random restaurant (between restaurant id (0 to n)
-    //Generate Random order every 1 second
-      JsonObject jsoner = new JsonObject();
+    @Override
+    public void start()
+    {
+        vertx.setPeriodic(20000, handler -> {
 
-      vertx.setPeriodic(3000,handler->{
+            var randomRestaurant = pickRandomRestaurant(restaurants);
 
-      vertx.eventBus().send(Address.orderAddress,order.toJson());
+            List<Item> randomItems = pickRandomItems(randomRestaurant);
 
-      System.out.println("Order Sent From Client");
+            Order order = new Order(
+                generateRandomNumber(1, users.size()),
+                generateRandomNumber(1, restaurants.size()),
+                randomItems,
+                LocalDateTime.now().toString()
+            );
 
-    });
+            vertx.eventBus().send(Address.orderAddress, order.toJson());
 
-  }
+            System.out.println("Order Sent From Client: " + order.toJson());
+
+        });
+    }
+
+    private User pickRandomUser(ConcurrentHashMap<Long, User> users)
+    {
+        List<Long> userIds = new ArrayList<>(users.keySet());
+        Long randomUserId = userIds.get(generateRandomNumber(1, userIds.size() - 1));
+        return users.get(randomUserId);
+    }
+
+    private Restaurant pickRandomRestaurant(ConcurrentHashMap<Long, Restaurant> restaurants)
+    {
+        List<Long> restaurantIds = new ArrayList<>(restaurants.keySet());
+        Long randomRestaurantId = restaurantIds.get(generateRandomNumber(1, restaurantIds.size() - 1));
+        return restaurants.get(randomRestaurantId);
+    }
+
+    private List<Item> pickRandomItems(Restaurant restaurant)
+    {
+        List<Item> availableItems = restaurant.getItems();
+        int numberOfItems = generateRandomNumber(1, availableItems.size()); // Random number of items to pick
+
+        List<Item> selectedItems = new ArrayList<>();
+        for (int i = 0; i < numberOfItems; i++)
+        {
+            selectedItems.add(availableItems.get(generateRandomNumber(0, availableItems.size() - 1)));
+        }
+
+        return selectedItems;
+    }
+
+    public static int generateRandomNumber(int m, int n)
+    {
+        Random random = new Random();
+        return random.nextInt(m,n);
+    }
 }
