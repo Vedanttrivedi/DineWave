@@ -3,6 +3,7 @@ package com.example.dinewave.services;
 import com.example.dinewave.dao.OrderDAO;
 import com.example.dinewave.models.system.Order;
 import com.example.dinewave.utils.Address;
+import com.example.dinewave.utils.OrderStatus;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.json.Json;
@@ -28,7 +29,6 @@ public class OrderService extends AbstractVerticle
 
       var order = handler.body();
       //First Make the payment
-
       eventBus.request(Address.paymentAddress,order,reply->{
 
       if(reply.succeeded())
@@ -39,6 +39,8 @@ public class OrderService extends AbstractVerticle
 
             if(replyInString.equals("Done"))
             {
+                //update the order status to ordered
+                order.put("orderStatus", OrderStatus.ordered);
 
                 System.out.println("Sending Order Information to DeliveryAddress and RestaurantAddress");
 

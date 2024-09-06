@@ -79,7 +79,7 @@ public class PaymentService extends AbstractVerticle
 
                 System.out.println("Payment complete at " + LocalDateTime.now());
 
-                handler.reply("Payment successful.");
+                handler.reply("Done");
             }
 
             else

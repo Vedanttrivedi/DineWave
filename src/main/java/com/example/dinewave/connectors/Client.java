@@ -4,6 +4,7 @@ import com.example.dinewave.dao.Database; // Import the database class
 import com.example.dinewave.models.actors.User;
 import com.example.dinewave.models.actors.Restaurant;
 import com.example.dinewave.models.system.Item;
+import com.example.dinewave.models.system.Location;
 import com.example.dinewave.models.system.Order;
 import com.example.dinewave.utils.Address;
 import io.vertx.core.AbstractVerticle;
@@ -47,6 +48,14 @@ public class Client extends AbstractVerticle
             vertx.eventBus().send(Address.orderAddress, order.toJson());
 
             System.out.println("Order Sent From Client: " + order.toJson());
+
+        });
+
+        vertx.eventBus().<JsonObject>localConsumer(Address.clientService,handler->{
+
+            System.out.println("Client Order Recived At "+ LocalDateTime.now().toString());
+
+            System.out.println("Client Order "+handler.body());
 
         });
     }

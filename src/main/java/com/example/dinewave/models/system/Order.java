@@ -1,5 +1,6 @@
 package com.example.dinewave.models.system;
 
+import com.example.dinewave.utils.OrderStatus;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
@@ -19,8 +20,8 @@ public record Order (long userId,long restaurantId,List<Item> items,String time)
       .put("userId",userId)
       .put("restaurantId",restaurantId)
        .put("items",itemsArray)
-      .put("time",time);
-
+      .put("time",time)
+        .put("orderStatus", OrderStatus.pending);
       return object;
   }
 }
